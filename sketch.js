@@ -63,7 +63,7 @@ function draw() {
       if (timer <= 0) {
         if (random(1)< 0.01) {
           enemies.push(new Enemy());
-          timer = 5;
+          timer = 3;
         }
       }
       background(243,255,189);
@@ -75,7 +75,7 @@ function draw() {
           gameover = true;
         }
       }
-      
+
       player.show();
       player.move();
     }
