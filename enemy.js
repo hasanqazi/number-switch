@@ -10,10 +10,6 @@ class Enemy {
     this.x -= 3;
   }
 
-  showRnum() {
-    console.log(this.rnum);
-  }
-
   show() {
     noStroke();
     fill(255,22,84);

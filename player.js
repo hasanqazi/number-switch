@@ -34,7 +34,7 @@ class Player {
 
   show() {
     noStroke();
-    fill(36,123,160);
+    fill(120,227,253);
     rect(this.x, this.y, this.r, this.r);
     fill(243,255,189);
     textSize(32);

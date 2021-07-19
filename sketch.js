@@ -1,19 +1,26 @@
 let player;
 let enemies = [];
-
-let play = false;
+let spikes = [];
 
 let nums = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 
 let soundClassifier;
 
+let play = false;
 let timer = 0;
+let tut_timer = 0;
 let gameover = false;
 let replay;
+let score = 0;
+let textY = 200;
+
+let spikeImg;
 
 function preload() {
   const options = { probabilityThreshold: 0.95 };
   soundClassifier = ml5.soundClassifier('SpeechCommands18w', options);
+
+  spikeImg = loadImage('spikes.png');
 }
 
 function setup() {
@@ -59,18 +66,58 @@ function draw() {
     if (frameCount % 60 == 0 && timer > 0) { 
       timer --;
     }
+    if (frameCount % 60 == 0 && play) { 
+      score ++;
+    }
     if (play == true) {
       if (timer <= 0) {
         if (random(1)< 0.01) {
-          enemies.push(new Enemy());
-          timer = 3;
+          if (random(1) < 0.2) {
+            spikes.push(new Spike());
+            timer = 3;
+          } else {
+            enemies.push(new Enemy());
+            timer = 3;
+          } 
         }
       }
       background(243,255,189);
+      fill(86,44,44);
+      textSize(32);
+      textStyle(BOLD);
+      text(score, (windowWidth/2), 100);
+
+      fill(188, 196, 149);
+      textSize(24);
+      textStyle(BOLD);
+      textAlign(LEFT);
+      
+      text("Say the number on pink box to avoid being detected by them.", (windowWidth-800), textY);
+      text("Say 'UP' to jump over the spikes.", (windowWidth-800), textY+50);
+
+      if (frameCount % 60 == 0) {
+        if (play) {
+          tut_timer ++;
+        }
+      }
+      
+      if (tut_timer >= 10) {
+        textY = -300;
+      }
+
       for (let e of enemies) {
         e.move();
         e.show();
         if (player.hits(e)) {
+          console.log('game over');
+          gameover = true;
+        }
+      }
+
+      for (let s of spikes) {
+        s.move();
+        s.show();
+        if (player.hits(s)) {
           console.log('game over');
           gameover = true;
         }
@@ -83,15 +130,20 @@ function draw() {
     background(243,255,189);
     button.position(-100, -100)
     enemies = []
+    spikes = []
     fill(86,44,44);
     textSize(64);
     textStyle(BOLD);
     text("Game Over!", (windowWidth/2)-150, 300);
-    setTimeout(resetGame, 2000);
+    textSize(32);
+    textStyle(BOLD);
+    text("Score: "+ score, (windowWidth/2)-50, 400);
+    setTimeout(resetGame, 3000);
   }
 }
 
 function resetGame() {
   gameover = false;
   button.position(0, 0);
+  score = 0;
 }

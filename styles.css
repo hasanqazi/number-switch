@@ -27,7 +27,7 @@ button {
   position: absolute;
   left: 0px;
   top: 0px;
-  background-color: #CEBBC9;
+  background-color: rgb(86,44,44);
   border: 0;
   border-radius:28px;
 	cursor:pointer;
