@@ -1,6 +1,7 @@
 let player;
 let enemies = [];
 let spikes = [];
+let pipes = [];
 
 let nums = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 
@@ -13,6 +14,8 @@ let gameover = false;
 let replay;
 let score = 0;
 let textY = 200;
+let crouchTimer = 0;
+let pipeTimer = 0;
 
 let spikeImg;
 
@@ -48,6 +51,10 @@ function gotCommand(error, results) {
   if (results[0].label == 'up') {
     player.jump();
   }
+  if (results[0].label == 'down') {
+    crouchTimer += 1.5;
+    player.crouch();
+  }
 }
 
 function runGame() {
@@ -57,6 +64,10 @@ function runGame() {
 function keyPressed() {
   if (key == ' ') {
     player.jump();
+  }
+  if (key == 's') {
+    crouchTimer += 1.5;
+    player.crouch();
   }
   console.log(enemies);
 }
@@ -74,32 +85,63 @@ function draw() {
     textSize(24);
     textStyle(BOLD);
     textAlign(LEFT);
-      
+
     text("Say the number on pink box to avoid being detected by them.", (windowWidth-800), textY);
     text("Say 'UP' to jump over the spikes.", (windowWidth-800), textY+50);
+    text("Say 'DOWN' to crouch under the pipes.", (windowWidth-800), textY+100);
 
     if (play == true) {
       if (timer <= 0) {
         if (random(1)< 0.01) {
-          if (random(1) < 0.3) {
+          let roll = random(1);
+          if (roll < 0.2) {
+            if (pipeTimer == 0) {
+              pipes.push(new Pipe());
+              timer = 2;
+              pipeTimer = 4;
+            }
+          } else if(roll < 0.6) {
             spikes.push(new Spike());
             timer = 2;
-          } else {
+          } else if (roll < 1) {
             enemies.push(new Enemy());
             timer = 2;
           } 
+          console.log(roll);
         }
       }
+
       background(243,255,189);
       fill(86,44,44);
       textSize(32);
       textStyle(BOLD);
       text(score, (windowWidth/2), 100);
 
+      fill(188, 196, 149);
+      textSize(24);
+      textStyle(BOLD);
+      textAlign(LEFT);
+
+      text("Say the number on pink box to avoid being detected by them.", (windowWidth-800), textY);
+      text("Say 'UP' to jump over the spikes.", (windowWidth-800), textY+50);
+      text("Say 'DOWN' to crouch under the pipes.", (windowWidth-800), textY+100);
+
       if (frameCount % 60 == 0) {
         if (play) {
           tut_timer ++;
         }
+      }
+
+      if (score != 0 && score % 100 == 0) {
+        enemies.splice(0, (enemies.length)-2);
+        spikes.splice(0, (enemies.length)-2);
+        pipes.splice(0, (enemies.length)-2);
+        console.log("cleared arrays.");
+      }
+
+      if (frameCount % 60 == 0 && pipeTimer > 0) { 
+        pipeTimer --;
+        console.log(pipeTimer);
       }
       
       if (tut_timer >= 10) {
@@ -124,6 +166,26 @@ function draw() {
         }
       }
 
+      for (let p of pipes) {
+        p.move();
+        p.show();
+        if (player.hits(p)) {
+          console.log('game over');
+          gameover = true;
+        }
+      }
+
+      if (frameCount % 60 == 0 && crouchTimer > 0) { 
+        crouchTimer --;
+        if (crouchTimer < 0) {
+          crouchTimer = 0;
+        }
+      }
+
+      if (crouchTimer == 0) {
+        player.stand();
+      }
+
       player.show();
       player.move();
     }
@@ -132,6 +194,7 @@ function draw() {
     button.position(-100, -100)
     enemies = []
     spikes = []
+    pipes = []
     fill(86,44,44);
     textSize(64);
     textStyle(BOLD);
@@ -144,6 +207,8 @@ function draw() {
 }
 
 function resetGame() {
+  crouchTimer = 0;
+  pipeTimer = 0;
   gameover = false;
   button.position(0, 0);
   score = 0;

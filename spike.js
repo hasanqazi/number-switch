@@ -1,6 +1,7 @@
 class Spike {
   constructor() {
-    this.r = 50 ;
+    this.px = 50;
+    this.py = 30;
     this.x = width;
     this.y = height - 30;
   }
@@ -12,6 +13,6 @@ class Spike {
   show() {
     noStroke();
     fill(255);
-    image(spikeImg, this.x, this.y, this.r, 30);
+    image(spikeImg, this.x, this.y, this.px, this.py);
   }
 }

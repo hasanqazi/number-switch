@@ -1,8 +1,9 @@
 class Enemy {
   constructor() {
-    this.r = 50 ;
+    this.px = 50;
+    this.py = 50;
     this.x = width;
-    this.y = height - this.r;
+    this.y = height - this.py;
     this.rnum = int(random(0, 10))
   }
 
@@ -13,7 +14,7 @@ class Enemy {
   show() {
     noStroke();
     fill(255,22,84);
-    rect(this.x, this.y, this.r, this.r);
+    rect(this.x, this.y, this.px, this.py);
     fill(243,255,189);   
     textSize(32);
     textStyle(BOLD);
