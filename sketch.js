@@ -72,12 +72,12 @@ function draw() {
     if (play == true) {
       if (timer <= 0) {
         if (random(1)< 0.01) {
-          if (random(1) < 0.2) {
+          if (random(1) < 0.3) {
             spikes.push(new Spike());
-            timer = 3;
+            timer = 2;
           } else {
             enemies.push(new Enemy());
-            timer = 3;
+            timer = 2;
           } 
         }
       }
