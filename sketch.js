@@ -17,6 +17,9 @@ let textY = 200;
 let crouchTimer = 0;
 let pipeTimer = 0;
 
+let speechCommand;
+let confidence;
+
 let spikeImg;
 
 function preload() {
@@ -32,6 +35,8 @@ function setup() {
   player = new Player();
 
   soundClassifier.classify(gotCommand);
+
+  speechCommand = createP('');
 
   button = createButton('play');
   button.position(0, 0);
@@ -55,6 +60,9 @@ function gotCommand(error, results) {
     crouchTimer += 1.5;
     player.crouch();
   }
+  
+  confidence = (results[0].confidence*100);
+  speechCommand.html(`${results[0].label} : ${confidence.toFixed(2)+"%"}`);
 }
 
 function runGame() {
