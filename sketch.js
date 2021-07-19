@@ -69,6 +69,15 @@ function draw() {
     if (frameCount % 60 == 0 && play) { 
       score ++;
     }
+
+    fill(188, 196, 149);
+    textSize(24);
+    textStyle(BOLD);
+    textAlign(LEFT);
+      
+    text("Say the number on pink box to avoid being detected by them.", (windowWidth-800), textY);
+    text("Say 'UP' to jump over the spikes.", (windowWidth-800), textY+50);
+
     if (play == true) {
       if (timer <= 0) {
         if (random(1)< 0.01) {
@@ -86,14 +95,6 @@ function draw() {
       textSize(32);
       textStyle(BOLD);
       text(score, (windowWidth/2), 100);
-
-      fill(188, 196, 149);
-      textSize(24);
-      textStyle(BOLD);
-      textAlign(LEFT);
-      
-      text("Say the number on pink box to avoid being detected by them.", (windowWidth-800), textY);
-      text("Say 'UP' to jump over the spikes.", (windowWidth-800), textY+50);
 
       if (frameCount % 60 == 0) {
         if (play) {
