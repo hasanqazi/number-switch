@@ -5,6 +5,7 @@ class Player {
     this.x = 50;
     this.y = height - this.py;
     this.vy = 0;
+    // gravity allows the player to jump
     this.gravity = 0.5;
     this.num = 0;
     this.crouchTime = 1.5;
@@ -16,14 +17,17 @@ class Player {
     }
   }
 
+  // changes the player size for crouching
   crouch() {
     this.py = 25; 
   }
 
+  // changes the player size for standing
   stand() {
     this.py = 50;
   }
 
+  // checks for collision between the enemy and the player
   hits(enemy) {
     if (this.num == enemy.rnum) {
       return;
@@ -32,16 +36,19 @@ class Player {
     }
   }
 
+  // shows the value on the player
   checkNum(rnum) {
     this.num = rnum;
   }
 
+  // moves the player
   move() {
     this.y += this.vy;
     this.vy += this.gravity;
     this.y = constrain(this.y, 0, height - this.py);
   }
 
+  //renders the player
   show() {
     noStroke();
     fill(120,227,253);

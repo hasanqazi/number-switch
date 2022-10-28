@@ -48,6 +48,8 @@ function gotCommand(error, results) {
     console.error(error);
   }
   console.log(results[0].label, results[0].confidence)
+
+  // converts the values to numbers and adds it to the player
   for (let n in nums) {
     if (results[0].label == nums[n]) {
       player.checkNum(n);
@@ -61,6 +63,7 @@ function gotCommand(error, results) {
     player.crouch();
   }
   
+  // Shows the confidence value of the speech model to the user
   confidence = (results[0].confidence*100);
   speechCommand.html(`${results[0].label} : ${confidence.toFixed(2)+"%"}`);
 }
@@ -82,6 +85,7 @@ function keyPressed() {
 
 function draw() {
   if (!gameover) {
+    // Calculates the time spent in game by calculating frames per second
     if (frameCount % 60 == 0 && timer > 0) { 
       timer --;
     }
@@ -89,6 +93,8 @@ function draw() {
       score ++;
     }
 
+
+    // Tutorial for the game
     fill(188, 196, 149);
     textSize(24);
     textStyle(BOLD);
@@ -98,8 +104,10 @@ function draw() {
     text("Say 'UP' to jump over the spikes.", (windowWidth-800), textY+50);
     text("Say 'DOWN' to crouch under the pipes.", (windowWidth-800), textY+100);
 
+    // Main game loop
     if (play == true) {
       if (timer <= 0) {
+        // Calculate the probability of an obstacle spawning
         if (random(1)< 0.01) {
           let roll = random(1);
           if (roll < 0.2) {
@@ -119,6 +127,7 @@ function draw() {
         }
       }
 
+      // Tutorial dissappears after 10 seconds
       background(243,255,189);
       fill(86,44,44);
       textSize(32);
@@ -156,6 +165,7 @@ function draw() {
         textY = -300;
       }
 
+      // Moves and renders all enemies
       for (let e of enemies) {
         e.move();
         e.show();
@@ -165,6 +175,7 @@ function draw() {
         }
       }
 
+      // Moves and renders all spikes
       for (let s of spikes) {
         s.move();
         s.show();
@@ -174,6 +185,7 @@ function draw() {
         }
       }
 
+      // Moves and renders all pipes
       for (let p of pipes) {
         p.move();
         p.show();
@@ -183,6 +195,7 @@ function draw() {
         }
       }
 
+      // Timer for the player to crouch
       if (frameCount % 60 == 0 && crouchTimer > 0) { 
         crouchTimer --;
         if (crouchTimer < 0) {
@@ -198,6 +211,7 @@ function draw() {
       player.move();
     }
   } else {
+    // Shows a "Game Over" screen.
     background(243,255,189);
     button.position(-100, -100)
     enemies = []
@@ -214,6 +228,7 @@ function draw() {
   }
 }
 
+// Resets the game
 function resetGame() {
   crouchTimer = 0;
   pipeTimer = 0;

@@ -4,6 +4,7 @@ class Enemy {
     this.py = 50;
     this.x = width;
     this.y = height - this.py;
+    // Number that shows on the enemy that the player has to say
     this.rnum = int(random(0, 10))
   }
 
